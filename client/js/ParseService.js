@@ -3,7 +3,7 @@ var ParseService = (function ($) {
 
     // Constants
     var PARSE = {
-        DOMAIN: 'https://api.parse.com',
+        DOMAIN: 'http://127.0.0.1:3000',
         VERSION: '/1/',
         OBJ_CLASSES: 'classes/',
         DATA_TYPE_HTTP: 'http',

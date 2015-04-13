@@ -53,7 +53,7 @@ var JWebbChat = (function ($, Chat, PS) {
     if (_updateNum > 1) {
       _updateStatus('Requesting chat data...');
     }
-    PS.fetch({order:'createdAt'}, _refreshChatView);
+    PS.fetch({order:'-createdAt'}, _refreshChatView);
   }
 
   function _refreshChatView (data) {
