@@ -1,0 +1,249 @@
+// Variables
+$app-width: 420px;
+$app-margin-top: 20px;
+
+
+$header-height: 38px;
+
+$pad-base: 10px;
+
+$li-pad: 0.2em;
+$li-pad-expanded: 0.8em;
+
+$port-height: 282px;
+
+$status-height: 16px;
+
+$ctrls-div-height: 42px;
+$ctrl-height: 32px;
+$ctrl-pad-y: ($ctrls-div-height - $ctrl-height) / 2;
+
+$fa-font-path:   "../fonts";
+
+$color-lightgrey: #f7f7f7;
+$color-mediumgrey: #555555;
+$color-darkgrey: #121212;
+$color-perywinkle: #7e899f;
+$color-blood: #BD192D;
+$color-paleyellow: #fff9b2;
+$color-gold: #c2a018;
+$color-teal: #5ec4b6;
+$color-orange: #fd9a0d;
+
+
+// Imports
+@import "mixins";
+@import "vendor/normalize/normalize";
+@import "vendor/font-awesome/font-awesome";
+
+// Styles
+body {
+    font-size: 16px;
+    //line-height: 1.615em;
+}
+
+main.container {
+    // @include clearfix;
+}
+
+.chat-view {
+    // position: relative;
+    width: $app-width;
+    height: 336px;
+    margin: 20px auto 0 auto;
+    // border: 1px solid $color-darkgrey;
+    border: 1px solid $color-mediumgrey;
+    background-color: $color-mediumgrey;
+    &.ui-on {
+        .options {
+            margin-top: 0;
+            @include transition(all, 0.1s, ease-in);
+        }
+        .viewport {
+            height: $port-height - $ctrls-div-height;
+            ul.messages {
+                max-height: $port-height - $status-height - $ctrls-div-height;
+                @include transition(all, 0.5s, ease-in);
+                li:last-child {
+                    margin-bottom: $ctrl-pad-y;
+                }
+            }
+        }
+        .ctrls {
+            height: $ctrls-div-height;
+            opacity: 1;
+            @include transition(all, 0.1s, ease-in);
+            padding-top: $ctrl-pad-y;
+        }
+    }
+    &.history {
+        ul.messages li {
+            position: relative;
+            padding-top: $li-pad-expanded;
+            padding-bottom: $li-pad-expanded + 0.5;
+            span {
+                &.speech {
+                    display: block;
+                    margin: 2px $pad-base 0 $pad-base;
+                    border-top: 1px solid $color-darkgrey;
+                    border-bottom: 1px solid $color-darkgrey;
+                    padding: 2px 0 2px 4px;
+                    font-size: 0.9em;
+                    font-style: italic;
+                }
+                &.speaker, &.note {
+                    position: absolute;
+                    bottom: 0;
+                    font-size: $li-pad-expanded;
+                    font-weight: 700;
+                    text-align: right;
+                }
+                &.speaker {
+                    width: 72%;
+                }
+                &.note {
+                    display: inline-block;
+                    margin-right: 4px;
+                    right: 0;
+                    color: $color-gold;
+                }
+            }
+        }
+    }
+    header {
+        width: $app-width;
+        height: $header-height;
+        padding: 4px 0 0 0;
+        overflow: hidden;
+        h1 {
+            display: inline;
+            margin: 0 0 0 $pad-base;
+            font-size: 1.66em;
+            color: $color-lightgrey;
+        }
+        .options {
+            width: 44px;
+            margin-top: $header-height * -1;
+            // margin-right: $pad-base;
+            color: $color-teal;
+            font-size: 1.75em;
+            float: right;
+            @include transition(all, 0.1s, ease-in);
+            a {
+                color: $color-teal;
+                &:hover {
+                    color: $color-paleyellow;
+                }
+            }
+            i {
+                //font-size: $header-height;
+            }
+        }
+    }
+    .viewport {
+        height: $port-height;
+        @include transition(all, 0.1s, ease-in);
+        margin: 0 $pad-base $pad-base $pad-base;
+        background-color: $color-lightgrey;
+        overflow: hidden;
+        .info { // status
+            // position: relative;
+            width: 100%;
+            height: $status-height;
+
+            color: $color-gold;
+            background-color: $color-paleyellow;
+            font-size: 0.6em;
+            text-align: right;
+            @include box-shadow(0, 1px, 1px, rgba(0, 0, 0, 0.08));
+            p {
+                margin: 0;
+                padding: 1px 2px 0 0;
+            }
+        }
+    }
+    .ctrls {
+        width: $app-width - ($pad-base * 2);
+        height: 0;
+        opacity: 0;
+        @include transition(all, 0.1s, ease-in);
+        padding: 0 $pad-base;
+        background-color: $color-mediumgrey;
+        overflow: hidden;
+        @include box-shadow(0, -1px, 1px, rgba(0, 0, 0, 0.08));
+        input, button {
+            height: $ctrl-height;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        input {
+            height: $ctrl-height - 4; // border: 2px inset rgb(0, 0, 0)
+            padding-top: 0;
+            padding-bottom: 0;
+            width: 75%;
+            font-size: 0.9em;
+        }
+        button {
+            float: right;
+            width: 22%;
+            border: none;
+            padding-top: 6px;
+            color: $color-lightgrey;
+            background-color: $color-teal;
+            text-transform: uppercase;
+        }
+    }
+}
+
+ul.messages {
+    max-height: 100%;
+    margin-top: 0;
+    padding: 2px 0;
+    overflow-y: scroll;
+    // overflow-x: none;
+    li {
+        list-style: none;
+        margin: 0 ($pad-base + 2) 2px 4px;
+        margin-right: $pad-base;
+        margin-bottom: 2px;
+        padding: $li-pad 0;
+        font-size: 0.8em;
+        @include clearfix;
+        &:last-child {
+            margin-bottom: $ctrl-pad-y * 3;
+        }
+        &.from-me {
+            .speaker {
+                color: $color-blood;
+            }
+            .speech {
+                color: $color-darkgrey;
+                font-style: italic;
+            }
+        }
+        &.from-it {
+            .speaker {
+                color: $color-darkgrey; // blood-red
+            }
+        }
+        &.from-them {
+            .speaker {
+                color: $color-orange;
+            }
+        }
+        span {
+            &.speaker {
+                width: 90px;
+                float: left;
+                font-weight: bold;
+                word-wrap: break-word;
+            }
+            &.speech {
+                margin-bottom: 10px;
+            }
+            &.note {
+                display: none;
+            }
+        }
+    }
+}
