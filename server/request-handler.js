@@ -11,11 +11,21 @@ this file and include it in basic-server.js so that it actually works.
 *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html.
 
 **************************************************************/
+var DB = [];
 
 module.exports = function(request, response) {
   // Request and Response come from node's http module.
   // http://nodejs.org/documentation/api/
   console.log("Serving request type " + request.method + " for url " + request.url);
+
+  var data = request.url.split('/').slice(1);
+  var database = data[0];
+  var objType = data[1];
+  var className = data[2];
+
+  DB[database] = DB[database] || {};
+  DB[database][objType] = DB[database][objType] || {};
+  DB[database][objType][className] = DB[database][objType][className] || [];
 
   var statusCode = 200;
   var headers = defaultCorsHeaders;
@@ -28,8 +38,17 @@ module.exports = function(request, response) {
      up in the browser.
 
      Calling .end "flushes" the response's internal buffer, forcing
-     node to actually send all the data over to the client. */
-  response.end("Hello, World!");
+     node to actually send all the data over to the client.
+  */
+  var resp = {};
+  if (request.method === 'GET') {
+    resp.results = DB[database][objType][className];
+  }
+
+  if (request.method === 'POST') {
+
+  }
+  response.end(JSON.stringify(resp));
 };
 
 /* These headers will allow Cross-Origin Resource Sharing (CORS).

@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Chatbuilder</title>
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <!-- <script src="http://chatbuilder.hackreactor.com/ChatBuilder.js"></script> -->
+    <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+    <script type="text/javascript" src="js/ChatBuilder.js"></script>
+    <script type="text/javascript" src="js/ParseService.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+</head>
+<body>
+
+    <script>
+    /*
+    *  Nice, you
+    *
+    */
+
+    // Your JavaScript code will go right here!
+    delete Chat.display;
+    delete Chat.fetch;
+    delete Chat.send;
+
+    // Initialize scripts loaded in from 'main.js'
+    JWebbChat.init(true);
+    </script>
+
+    <main class="container" role="main">
+        <div class="chat-view" data-behavior="client">
+            <header>
+                <h1>JWebbChat</h1>
+                <div data-behavior="options" class="options">
+                    <a href="" class="toggle"><i class="fa fa-history"></i></a>
+                </div>
+            </header>
+            <div class="viewport">
+                <div class="info" data-behavior="status"></div>
+                <ul class="messages" data-behavior="messages"></ul>
+            </div>
+            <div class="ctrls off-canvas-bottom">
+                <input class="draft" type="text" placeholder="Enter your message"/>
+                <button class="send" disabled>Send</button>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
