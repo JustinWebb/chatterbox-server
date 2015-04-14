@@ -20,21 +20,21 @@ var defaultCorsHeaders = {
   "access-control-allow-headers": "content-type, accept",
   "access-control-max-age": 10 // Seconds.
 };
-module.exports = {
-  addMessage: function ( data ){
-    console.log("data", data);
-    //generate a unique objectId
-    //append objectId to data
-    data.objectId=messages.length;//first one will be 0
-    //append createdAt to data
-    data.createdAt = Date.now();
-    //append modifiedAt to data?
+addMessage = function ( data ){
+  //generate a unique objectId
+  //append objectId to data
+  data.objectId=messages.length;//first one will be 0
+  //append createdAt to data
+  data.createdAt = Date.now();
+  //append modifiedAt to data?
 
-    //save the data in messages
-    messages.push(data);
-    //return the objectId
-    return data.objectId;
-  },
+  //save the data in messages
+  messages.push(data);
+  //return the objectId
+  return data.objectId;
+}
+
+module.exports = {
 
   requestHandler: function(request, response) {
     // Request and Response come from node's http module.
@@ -71,6 +71,9 @@ module.exports = {
       statusCode = 404;
       response.writeHead(statusCode, headers);
       response.end('{}');
+    } else if (request.method === 'OPTIONS') {
+      response.writeHead(statusCode, headers);
+      response.end('{}');
     } else if (request.method === 'GET') {
       var resp = {};
       resp.results = messages;
@@ -86,7 +89,7 @@ module.exports = {
           request.connection.destroy();
       });
       request.on('end', function () {
-        console.log("body", body);
+        console.log('POST');
 
         var id = addMessage( JSON.parse(body) );
 
