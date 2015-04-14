@@ -11,13 +11,13 @@ this file and include it in basic-server.js so that it actually works.
 *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html.
 
 **************************************************************/
+var _ = require('underscore');
 var messages = [];
-var nextId=0;
 addMessage = function ( data ){
   console.log("data", data);
   //generate a unique objectId
   //append objectId to data
-  data.objectId=nextId++;//first one will be 0
+  data.objectId=messages.length;//first one will be 0
   //append createdAt to data
   data.createdAt = Date.now();
   //append modifiedAt to data?
@@ -37,7 +37,6 @@ module.exports = function(request, response) {
   var statusCode = 200;
   var headers = defaultCorsHeaders;
   headers['Content-Type'] = "text/plain";
-  response.writeHead(statusCode, headers);
 
   /* Make sure to always call response.end() - Node may not send
      anything back to the client until you do. The string you pass to
@@ -47,18 +46,29 @@ module.exports = function(request, response) {
      Calling .end "flushes" the response's internal buffer, forcing
      node to actually send all the data over to the client.
   */
-  if (request.method === 'OPTIONS') {
-    //console.log('OPTIONS: ', request);
-      response.end(JSON.stringify({}));
-  }
+  //if the url is invalid
+  var goodURIs = [
+    '/classes/messages',
+    '/classes/room'
+  ];
+  var isValid=false;
+  //CHECK FOR BAD URIS AND BAIL OUT
+  _.each(goodURIs, function (elem, i) {
+    if (request.url.indexOf(elem) === 0) {
+      isValid=true;
+    }
+  });
 
-  if (request.method === 'GET') {
+  if(!isValid){
+    statusCode = 404;
+    response.writeHead(statusCode, headers);
+    response.end('{}');
+  } else if (request.method === 'GET') {
     var resp = {};
     resp.results = messages;
+    response.writeHead(statusCode, headers);
     response.end(JSON.stringify(resp));
-  }
-
-  if (request.method === 'POST') {
+  } else if (request.method === 'POST') {
     var body = '';
     request.on('data', function (data) {
       body += data;
@@ -72,6 +82,8 @@ module.exports = function(request, response) {
 
       var id = addMessage( JSON.parse(body) );
 
+      statusCode = 201;
+      response.writeHead(statusCode, headers);
       response.end(JSON.stringify({objectId:id}));
     });
   }
