@@ -47,6 +47,10 @@ module.exports = function(request, response) {
      Calling .end "flushes" the response's internal buffer, forcing
      node to actually send all the data over to the client.
   */
+  if (request.method === 'OPTIONS') {
+    //console.log('OPTIONS: ', request);
+      response.end(JSON.stringify({}));
+  }
 
   if (request.method === 'GET') {
     var resp = {};

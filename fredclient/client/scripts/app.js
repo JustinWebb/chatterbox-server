@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 var Message = Backbone.Model.extend({
-  url: 'http://127.0.0.1:3000/',
+  url: 'http://127.0.0.1:3000/classes/messages',
   defaults: {
     username: ''
   }
@@ -13,7 +13,7 @@ var Message = Backbone.Model.extend({
 
 var Messages = Backbone.Collection.extend({
   model: Message,
-  url: 'http://127.0.0.1:3000/',
+  url: 'http://127.0.0.1:3000/classes/messages',
 
   loadMsgs: function(){
     this.fetch({data: { order: '-createdAt' }});
@@ -182,6 +182,9 @@ app = {
         success: function(json){
           message.objectId = json.objectId;
           app.displayMessage(message);
+        },
+        error: function (json) {
+          console.log('error', json);
         },
         complete: function(){
           app.stopSpinner();
