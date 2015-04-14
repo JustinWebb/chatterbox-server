@@ -1,4 +1,5 @@
 var handler = require('../request-handler');
+console.log("----------------------------------------------------->",handler);
 var expect = require('../../node_modules/chai/chai').expect;
 var basicServer = require('../basic-server').server;
 var stubs = require('./Stubs');
@@ -17,7 +18,6 @@ describe('Node Server Request Listener Function', function() {
     // but we want to test our function's behavior totally independent of the server code
     var req = new stubs.request('/classes/room1', 'GET');
     var res = new stubs.response();
-
     handler.requestHandler(req, res);
 
     expect(res._responseCode).to.equal(200);
